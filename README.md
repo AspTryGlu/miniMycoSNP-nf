@@ -80,7 +80,7 @@ miniMycoSNP is executed through a Bash script:
 
 ```bash
 bash miniMycosnp_2.sh
-
+```
 ### Required inputs
 
 1. `input.csv`
