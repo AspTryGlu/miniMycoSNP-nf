@@ -12,7 +12,7 @@ done
 mkdir -p vcf_files
 
 head -n 2 input.csv > new_samplesheet_only1.csv
-#nextflow run CDCgov/mycosnp-nf -profile docker --input new_samplesheet_only1.csv --fasta GCA_008275145.1_ASM827514v1_genomic.fna --outdir results_ref --skip_combined_analysis
+nextflow run CDCgov/mycosnp-nf -profile docker --input new_samplesheet_only1.csv --fasta GCA_008275145.1_ASM827514v1_genomic.fna --outdir results_ref --skip_combined_analysis
 
 for f in parte_*.csv; do
   outdir="results_$f"
@@ -33,4 +33,12 @@ for f in parte_*.csv; do
   rm -f  "$outdir"/samples/*/faqcs/*.fastq.gz
   rm -rf "$outdir/pipeline_info"
 done
+
+#MERGE
+ls vcf_files > vcf_list.csv
+nextflow run CDCgov/mycosnp-nf -profile docker --input new_samplesheet.csv  --ref_dir results_ref/reference --add_vcf_file vcf_list.csv --outdir results_merge
+
+cat results_parte_*/stats/qc_report/qc_report.txt | grep -v "Sample" >qc_report_lines
+head -n 1 results_parte_01.csv/stats/qc_report/qc_report.txt >qc_report_header
+cat qc_report_header qc_report_lines > QC_report_merged.txt
 
