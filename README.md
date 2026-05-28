@@ -80,3 +80,43 @@ miniMycoSNP is executed through a Bash script:
 
 ```bash
 bash miniMycosnp_2.sh
+
+### Required inputs
+
+1. `input.csv`
+   - Must follow the same format as the `mycosnp-nf` samplesheet  
+   - Contains paths to paired-end read files  
+
+2. Reference genome (FASTA)
+   - A FASTA file used for reference-based SNP calling  
+
+3. `new_samplesheet.csv`
+   - An empty CSV file containing only the header  
+   - Used internally to process one sample at a time  
+
+### General workflow
+
+- The script reads the `input.csv`  
+- Extracts one sample per iteration  
+- Writes it into `new_samplesheet.csv`  
+- Runs the main MycoSNP workflow  
+- Saves results  
+- Cleans:
+  - `work/` directory  
+  - Trimmed reads  
+- Continues with the next sample  
+
+---
+
+## Use case
+miniMycoSNP is ideal if you:
+
+- Have limited disk space  
+- Want to process samples without accumulating `work/` directories  
+- Need a simple sequential execution strategy  
+- Are running MycoSNP outside of an HPC environment  
+
+---
+
+## Summary
+miniMycoSNP trades off parallelism and flexibility for storage efficiency and simplicity, making large-scale fungal genome analysis feasible on modest infrastructure.
